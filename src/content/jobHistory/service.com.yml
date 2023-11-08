@@ -1,0 +1,10 @@
+id: service-com
+companyName: Service.com
+logo: "/job_history_logos/service_com.png"
+title: Web Developer / Designer
+startDate: July 2013
+endDate: August 2016
+bulletPoints:
+  - Designed the UI for web and native clients in Adobe Photoshop and Illustrator using Google’s Material Design Specification.
+  - Used Sass as a CSS preprocessor to build a responsive website and web app.
+  - Built the new version of the website and app using HTML5, CSS3, and AngularJS using Grunt and npm as build tools.

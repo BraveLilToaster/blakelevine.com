@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Background from "../components/Background.tsx";
+import JobHistorySection from "../components/JobHistorySection.astro";
+import SkillsSection from "../components/SkillsSection.tsx";
+import HeroBlob from "../components/HeroBlob.tsx";
+
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+---
+
+<!doctype html>
+<BaseLayout title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <div class="flex flex-1 relative overflow-hidden">
+    <Background client:load />
+    <div class="px-8 pt-8 z-0 mx-auto">
+      <div
+        class="flex flex-col-reverse md:flex-row min-h-[90vh] md:min-h-[70vh] justify-center items-center max-w-4xl mx-auto"
+      >
+        <div class="md:pr-4 lg:pr-6">
+          <h1
+            class="flex flex-col text-5xl md:text-6xl leading-snug md:leading-snug mb-3"
+          >
+            <span>Howdy.</span>
+            <span>I'm Blake.</span>
+          </h1>
+          <p class="text-xl/relaxed">
+            I am a Software Engineer working in Web Development creating
+            engaging and reliable experiences.
+          </p>
+        </div>
+        <div
+          class="flex flex-row justify-center self-center max-md:mb-8 w-full"
+        >
+          <div
+            class="max-md:w-full max-md:max-w-[20rem] md:w-72 lg:w-96 aspect-square"
+          >
+            <HeroBlob client:load />
+          </div>
+        </div>
+      </div>
+
+      <JobHistorySection />
+      <SkillsSection client:load />
+    </div>
+  </div>
+</BaseLayout>

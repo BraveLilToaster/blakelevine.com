@@ -1,0 +1,42 @@
+---
+import { getCollection } from "astro:content";
+import JobHistoryItem from "./JobHistoryItem.astro";
+import JobHistoryBackground from "./JobHistoryBackground.tsx";
+
+const jobs = (await getCollection("jobHistory"))
+  .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
+  .map((job) => job.data);
+---
+
+<div class="m-auto max-w-[912px]">
+  <h2 class="text-4xl mb-8 md:text-center">Professional History</h2>
+  <p class="text-lg/relaxed">
+    I have a decade of experience in early stage startups including product
+    launches, refactors and desinging early prototypes. My skills in User
+    Interface design lead to pixel perfect & responsive layouts.
+  </p>
+  <div class="relative lg:pt-[150px] lg:pb-[190px]">
+    <JobHistoryBackground className="max-lg:w-0" client:load />
+    <ul class="z-10 relative">
+      {
+        jobs.map((job, idx) => (
+          <li
+            class={`py-6 md:py-12 lg:pt-[8rem] lg:pb-[4rem] ${
+              idx % 2 ? `lg:pl-12 lg:pr-48` : `lg:pl-48 lg:pr-12`
+            }`}
+          >
+            <JobHistoryItem
+              id={job.id}
+              logo={job.logo}
+              companyName={job.companyName}
+              title={job.title}
+              startDate={job.startDate}
+              endDate={job.endDate}
+              bulletPoints={job.bulletPoints}
+            />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,10 @@
+id: pawnguru
+companyName: PawnGuru
+logo: "/job_history_logos/pawnguru.png"
+title: Lead Frontend Developer
+startDate: October 2017
+endDate: July 2019
+bulletPoints:
+  - Rebuilt the legacy site in React focusing on SEO and performance.
+  - Implemented style guide and component system for consistent UI.
+  - Supported legacy Django while incrementally building new features in React.

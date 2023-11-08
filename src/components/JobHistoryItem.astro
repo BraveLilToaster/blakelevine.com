@@ -1,0 +1,51 @@
+---
+import JobHistoryNodeMobile from "./JobHistoryNodeMobile.tsx";
+
+interface Props {
+  logo: string;
+  id: string;
+  companyName: string;
+  title: string;
+  startDate: Date;
+  endDate: Date;
+  bulletPoints: string[];
+}
+
+const { id, logo, companyName, title, startDate, endDate, bulletPoints } =
+  Astro.props;
+---
+
+<div class="flex flex-col md:flex-row lg:flex-col">
+  <JobHistoryNodeMobile
+    id={id}
+    logo={logo}
+    className="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:shrink"
+    client:load
+  />
+  <div>
+    <h3 class="text-3xl md:text-4xl">{companyName}</h3>
+    <p class="text-lg mb-0 font-medium">{title}</p>
+    <span class="font-extralight">
+      <time datetime={startDate.toISOString()}>
+        {
+          startDate.toLocaleDateString("en-us", {
+            year: "numeric",
+            month: "short",
+          })
+        }
+      </time>
+       -
+      <time datetime={endDate.toISOString()}>
+        {
+          endDate.toLocaleDateString("en-us", {
+            year: "numeric",
+            month: "short",
+          })
+        }
+      </time>
+    </span>
+  </div>
+</div>
+<ul class="flex flex-col list-square pt-6 gap-3">
+  {bulletPoints.map((point) => <li>{point}</li>)}
+</ul>
