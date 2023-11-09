@@ -41,7 +41,7 @@ export default function SkillsSections() {
   });
 
   return (
-    <div className="pt-10 md:pt-40">
+    <div className="py-10 md:pt-40 md:pb-20">
       <h2 className="text-4xl mb-8 md:text-center">Technical Skills</h2>
       <div className="flex flex-wrap justify-center">
         <Item
