@@ -40,11 +40,9 @@ export default function SkillsSections() {
     },
   });
 
-  console.log(getVaraint("#000000", "#336791", "stroke"));
-
   return (
     <div className="pt-10 md:pt-40">
-      <h2 className="text-4xl mb-8 md:text-center">Techincal Skills</h2>
+      <h2 className="text-4xl mb-8 md:text-center">Technical Skills</h2>
       <div className="flex flex-wrap justify-center">
         <Item
           title="Cypress"
