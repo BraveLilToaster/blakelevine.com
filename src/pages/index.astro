@@ -2,10 +2,197 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import Background from "../components/Background.tsx";
 import JobHistorySection from "../components/JobHistorySection.astro";
-import SkillsSection from "../components/SkillsSection.tsx";
 import HeroBlob from "../components/HeroBlob.tsx";
+import SkillIcon from "../components/SkillIcon.astro";
+import SkillsSection from "../components/SkillsSection";
+import { Icon } from "astro-icon";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
+
+const skills = [
+  {
+    title: "Astro",
+    fill: "#FF5D01",
+    icon: "astro",
+    style: "transform: translate(0px, 3px)",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#150426",
+        hoveredFill: "#FFF",
+      },
+      ".animation-target-1": {
+        fill: "#FF5D01",
+        hoveredFill: "#9F3B02",
+      },
+    },
+  },
+  {
+    title: "Cypress",
+    fill: "#58D09E",
+    icon: "cypress",
+    targetClasses: {
+      ".text-fill": {
+        fill: "#1B1E2E",
+        hoveredFill: "#FFFFFF",
+      },
+      ".gradient-1": {
+        target: "stopColor",
+        fill: "#1B1E2E",
+        hoveredFill: "#FFFFFF",
+      },
+      ".gradient-2": {
+        target: "stopColor",
+        fill: "#58D09E",
+        hoveredFill: "#007780",
+      },
+      ".gradient-3": {
+        fill: "#69D3A7",
+        hoveredFill: "#007780",
+      },
+    },
+  },
+  {
+    title: "Docker",
+    fill: "#1D63ED",
+    icon: "docker",
+    style: "transform: translate(2px, 0px)",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#1D63ED",
+        hoveredFill: "#FFF",
+      },
+    },
+  },
+  {
+    title: "Expo",
+    fill: "#333333",
+    icon: "expo",
+    style: "transform: translate(0px, -5px)",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#000000",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+  },
+  {
+    title: "Jest",
+    fill: "#99425B",
+    icon: "jest",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#99425B",
+        hoveredFill: "#FFFFFF",
+      },
+      ".animation-target-1": {
+        fill: "#FFF",
+        hoveredFill: "#000",
+      },
+    },
+  },
+  {
+    title: "Next.js",
+    fill: "#333333",
+    icon: "next_js",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#000000",
+        hoveredFill: "#FFF",
+      },
+    },
+  },
+  {
+    title: "Node.js",
+    fill: "#689F63",
+    icon: "node_js",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#333",
+        hoveredFill: "#FFF",
+      },
+      ".animation-target-1": {
+        fill: "#689F63",
+        hoveredFill: "#2a5e26",
+      },
+    },
+  },
+  {
+    title: "Postgres",
+    fill: "#336791",
+    icon: "postgres",
+    targetClasses: {
+      ".pg-background": {
+        fill: "#336791",
+        hoveredFill: "#FFF",
+      },
+      ".pg-eyes-fill": {
+        fill: "#FFF",
+        hoveredFill: "#336791",
+      },
+      ".pg-eyes-stroke": {
+        target: "stroke",
+        fill: "#FFF",
+        hoveredFill: "#336791",
+      },
+      ".pg-outline-1": {
+        target: "stroke",
+        fill: "#FFFFFF",
+        hoveredFill: "#336791",
+      },
+      ".pg-outline-2": {
+        target: "stroke",
+        fill: "#000000",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+    style: "transform: translate(0px, 5px)",
+  },
+  {
+    title: "Prisma",
+    fill: "#2D3748",
+    icon: "prisma",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#2D3748",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+  },
+  {
+    title: "React",
+    fill: "#149ECA",
+    icon: "react",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#149ECA",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+  },
+  {
+    title: "Tailwind",
+    fill: "#38BDF8",
+    icon: "tailwind",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#38BDF8",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+  },
+  {
+    title: "TypeScript",
+    fill: "#3178C6",
+    icon: "typescript",
+    style: "transform: scale(0.85) translate(10px, 10px)",
+    targetClasses: {
+      ".animation-target-0": {
+        fill: "#3178C6",
+        hoveredFill: "#FFFFFF",
+      },
+    },
+  },
+];
 ---
 
 <!doctype html>
@@ -40,7 +227,42 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
       </div>
 
       <JobHistorySection />
-      <SkillsSection client:load />
+      <div class="py-10 md:pt-40 md:pb-20">
+        <h2 class="text-4xl mb-8 md:text-center">Technical Skills</h2>
+        <div class="flex flex-wrap justify-center">
+          {
+            skills.map((skill) => (
+              <div class="basis-6/12 sm:basis-4/12 md:basis-3/12 flex flex-col items-center">
+                <SkillIcon
+                  class="max-w-[160px] mx-auto"
+                  fill={skill.fill}
+                  name={skill.icon}
+                >
+                  <Icon
+                    class="svg-icon"
+                    slot="svg-icon"
+                    name={skill.icon}
+                    width={100}
+                    height={100}
+                    style={skill?.style}
+                  />
+                </SkillIcon>
+                <p class="text-2xl font-semibold text-center">{skill.title}</p>
+              </div>
+            ))
+          }
+        </div>
+      </div>
     </div>
   </div>
+  <SkillsSection client:load />
 </BaseLayout>
+
+<script define:vars={{ skills }}>
+customElements.whenDefined("skill-icon").then(() => {
+  skills.forEach((skill) => {
+    const t = document.querySelector(`skill-icon[data-name=${skill.icon}]`);
+    t.animationTargetClasses = skill.targetClasses;
+  });
+});
+</script>

@@ -1,6 +1,9 @@
 id: service-com
 companyName: Service.com
-logo: "/job_history_logos/service_com.png"
+logo:
+  fallback: "/job_history_logos/service_com.png"
+  webp: "/job_history_logos//.webp"
+  avif: "/job_history_logos//.avif"
 title: Web Developer / Designer
 startDate: July 2013
 endDate: August 2016

@@ -44,21 +44,22 @@ export default function JobHistoryNode({
       />
       <motion.g className="logo" opacity={0} scale={0}>
         <defs>
-          <filter id={`logo-${id}`}>
-            <feImage href={logo} />
-          </filter>
           <clipPath id={`clip-logo-${id}`}>
             <motion.circle cx={cx} cy={cy} r={size / 1.7} />
           </clipPath>
         </defs>
-        <rect
-          x={cx - size / 2}
-          y={cy - size / 2}
-          height={size}
-          width={size}
-          style={{ filter: `url(#logo-${id})` }}
+        <foreignObject
+          x={cx - (size * 1.25) / 2}
+          y={cy - (size * 1.25) / 2}
+          height={size * 1.25}
+          width={size * 1.25}
           clipPath={`url(#clip-logo-${id})`}
-        />
+        >
+          <picture>
+            <source srcSet={logo} type="image/webp" />
+            <img src="/job_history_logos/bash_gg/bash_gg.opt.png" alt="logo" />
+          </picture>
+        </foreignObject>
       </motion.g>
     </motion.g>
   );

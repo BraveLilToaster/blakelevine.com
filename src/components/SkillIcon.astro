@@ -1,0 +1,275 @@
+---
+import type { HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"svg"> & {
+  fill: string;
+  name: string;
+  class: string;
+};
+
+const { fill, name, class: className } = Astro.props;
+
+const d =
+  "M89.875 55.8184C95.0166 48.0605 106.439 48.0605 111.581 55.8185L112.605 57.3638C115.64 61.9441 121.242 64.1222 126.587 62.8013L129.599 62.0572C140.385 59.3919 149.341 70.5645 144.35 80.461L142.653 83.8276C140.313 88.4679 140.977 94.0521 144.341 98.0182L146.943 101.085C152.968 108.188 149.669 119.121 140.711 121.734C135.128 123.362 131.327 128.512 131.432 134.309L131.476 136.778C131.676 147.862 118.728 154.066 110.167 146.987L108.138 145.31C103.735 141.67 97.4631 141.324 92.6843 144.458L91.6974 145.105C83.6537 150.38 72.8478 145.418 71.6434 135.897L71.3094 133.257C70.6404 127.969 66.7921 123.628 61.6091 122.314L59.811 121.859C49.9816 119.369 46.6664 107.122 53.9051 100.043L56.4794 97.5247C60.2234 93.8628 61.3939 88.3179 59.4478 83.4629L58.2944 80.5853C54.5063 71.1349 62.6209 61.2185 72.6709 63.0164L75.3563 63.4968C80.4716 64.412 85.6426 62.2043 88.5071 57.8823L89.875 55.8184Z";
+---
+
+<skill-icon data-fill={fill} data-name={name} class={className}>
+  <svg viewBox="0 0 200 200" width={200} height={200} class={className}>
+    <g class="skill-icon-group origin-center">
+      <path class="origin-center" d={d} fill={fill}></path>
+      <circle class="origin-center" cx={100} cy={100} r={70} fill="#FFF"
+      ></circle>
+      <g class="translate-x-[50px] translate-y-[50px]">
+        <slot name="svg-icon" />
+      </g>
+    </g>
+  </svg>
+</skill-icon>
+
+<script>
+  type TargetClasses = {
+    [className: string]: {
+      target: string;
+      fill: string;
+      hoveredFill: string;
+    };
+  };
+  const shortTiming = {
+    duration: 250,
+    iterations: 1,
+    direction: "normal",
+    easing: "ease-out",
+    fill: "forwards",
+  } as KeyframeAnimationOptions;
+
+  class SkillIcon extends HTMLElement {
+    _hovered: boolean;
+    _hideAnimation: any;
+    _name: string;
+    _fill: string;
+    _splat: SVGPathElement;
+    _circle: SVGCircleElement;
+    _iconGroup: SVGGElement;
+    _svg: SVGSVGElement;
+    _icon: SVGSVGElement | null;
+    _animationTargetClasses: TargetClasses | null;
+
+    constructor() {
+      super();
+
+      this._hovered = false;
+      this._svg = this.querySelector("svg")!;
+      this._iconGroup = this.querySelector(".skill-icon-group")!;
+      this._splat = this.querySelector("path")!;
+      this._circle = this.querySelector("circle")!;
+      this._name = this.dataset.name!;
+      this._fill = this.dataset.fill!;
+      this._icon = this.querySelector("svg.svg-icon");
+      this._animationTargetClasses = null;
+    }
+
+    setupEventListeners() {
+      this._svg.addEventListener("mouseover", this.onMouseEnter.bind(this));
+      this._svg.addEventListener("mouseleave", this.onMouseLeave.bind(this));
+      this._svg.addEventListener("click", this.onMouseEnter.bind(this));
+      document.addEventListener("touchstart", (event) => {
+        const isClickInside = this._svg.contains(event.target);
+
+        if (!isClickInside && this._hovered) {
+          this.onMouseLeave();
+        }
+      });
+    }
+
+    connectedCallback() {
+      this.setupEventListeners();
+    }
+
+    set animationTargetClasses(value) {
+      this._animationTargetClasses = value;
+    }
+
+    get animationTargetClasses() {
+      return this._animationTargetClasses;
+    }
+
+    async onMouseEnter() {
+      if (!this._hovered) {
+        this._hovered = true;
+
+        this._splat.animate(
+          [
+            {
+              transform: "scale(1.7)",
+              fill: this._fill,
+            },
+          ],
+          {
+            ...shortTiming,
+          },
+        );
+
+        this._splat.animate(
+          [
+            {
+              transform: "rotate(0deg)",
+            },
+            {
+              transform: "rotate(360deg)",
+            },
+          ],
+          {
+            duration: 6000,
+            iterations: Infinity,
+            direction: "normal",
+            easing: "linear",
+            composite: "add",
+          },
+        );
+
+        this._circle.animate(
+          [
+            {
+              fill: this._fill,
+            },
+          ],
+
+          shortTiming,
+        );
+
+        this._iconGroup.animate(
+          [
+            {
+              transform: "scale(1)",
+            },
+            {
+              transform: "scale(0.8)",
+            },
+          ],
+          {
+            duration: 1500,
+            delay: 500,
+            easing: "ease-out",
+            direction: "alternate",
+            iterations: Infinity,
+            fill: "forwards",
+            composite: "replace",
+          },
+        );
+
+        if (this._animationTargetClasses) {
+          Object.entries(this._animationTargetClasses).forEach(
+            ([className, states]) => {
+              const fill = this._icon?.querySelectorAll(className);
+              fill?.forEach((item) => {
+                item.animate(
+                  [
+                    {
+                      [states.target ?? "fill"]: states.hoveredFill,
+                    },
+                  ],
+                  {
+                    duration: 500,
+                    easing: "ease-out",
+                    fill: "forwards",
+                    composite: "replace",
+                  },
+                );
+              });
+            },
+          );
+        }
+      }
+    }
+
+    async onMouseLeave() {
+      if (this._hovered) {
+        this._hovered = false;
+
+        this._splat.animate(
+          [
+            {
+              fill: "#FFF",
+            },
+          ],
+          shortTiming,
+        );
+
+        this._splat.animate(
+          [
+            {
+              transform: "scale(1)",
+            },
+          ],
+          {
+            duration: 1000,
+            easing: "ease-in",
+            fill: "forwards",
+            composite: "replace",
+          },
+        );
+
+        this._splat.animate(
+          [
+            {
+              transform: "rotate(-360deg)",
+            },
+          ],
+          {
+            duration: 1000,
+            easing: "ease-in",
+            fill: "forwards",
+            composite: "replace",
+          },
+        );
+
+        this._circle.animate(
+          [
+            {
+              fill: "#FFF",
+            },
+          ],
+          shortTiming,
+        );
+
+        this._iconGroup.animate(
+          [
+            {
+              transform: "scale(1)",
+            },
+          ],
+          {
+            duration: 1000,
+            easing: "ease-out",
+            fill: "forwards",
+            composite: "replace",
+          },
+        );
+        if (this._animationTargetClasses) {
+          Object.entries(this._animationTargetClasses).forEach(
+            ([className, states]) => {
+              const fill = this._icon?.querySelectorAll(className);
+              fill?.forEach((item) => {
+                item?.animate(
+                  [
+                    {
+                      [states.target ?? "fill"]: states.fill,
+                    },
+                  ],
+                  {
+                    duration: 500,
+                    easing: "ease-out",
+                    fill: "forwards",
+                    composite: "replace",
+                  },
+                );
+              });
+            },
+          );
+        }
+      }
+    }
+  }
+
+  customElements.define("skill-icon", SkillIcon);
+</script>

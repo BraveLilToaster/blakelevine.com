@@ -1,6 +1,9 @@
 id: pawnguru
 companyName: PawnGuru
-logo: "/job_history_logos/pawnguru.png"
+logo:
+  fallback: "/job_history_logos/pawnguru.png"
+  webp: "/job_history_logos//.webp"
+  avif: "/job_history_logos//.avif"
 title: Lead Front End Developer
 startDate: October 2017
 endDate: July 2019

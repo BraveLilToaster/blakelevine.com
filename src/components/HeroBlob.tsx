@@ -42,8 +42,8 @@ export default function HeroBlob() {
 
       <g>
         <defs>
-          <filter id={`me`}>
-            <feImage href="/me.png" />
+          <filter id="offset" width="180" height="180">
+            <feOffset in="SourceGraphic" dx="20" dy="25" />
           </filter>
           <clipPath id={`clip-me`}>
             <PathTransfromer
@@ -55,14 +55,20 @@ export default function HeroBlob() {
             />
           </clipPath>
         </defs>
-        <rect
-          x={25}
-          y={40}
-          height={125}
-          width={150}
-          style={{ filter: `url(#me)` }}
+        <foreignObject
+          x="0"
+          y="0"
+          width="80%"
+          height="100%"
           clipPath={`url(#clip-me)`}
-        />
+          filter="url(#offset)"
+        >
+          <picture>
+            <source srcSet={"/me/me.avif"} type="image/avif" />
+            <source srcSet={"/me/me.webp"} type="image/webp" />
+            <img src="/me/me.opt.png" alt="logo" />
+          </picture>
+        </foreignObject>
       </g>
     </svg>
   );

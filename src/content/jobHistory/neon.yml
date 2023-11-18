@@ -1,6 +1,9 @@
 id: neon-marketplace
 companyName: Neon
-logo: "/job_history_logos/neon.png"
+logo:
+  fallback: "/job_history_logos/neon/neon.opt.png"
+  webp: "/job_history_logos//.webp"
+  avif: "/job_history_logos//.avif"
 title: Lead Engineer
 startDate: September 2020
 endDate: April 2022

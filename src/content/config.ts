@@ -23,7 +23,10 @@ const jobHistory = defineCollection({
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     bulletPoints: z.string().array(),
-    logo: z.string(),
+    logo: z.object({
+      fallback: z.string(),
+      webp: z.string().optional(),
+    }),
   }),
 });
 
