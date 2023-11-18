@@ -34,6 +34,7 @@ const d =
       hoveredFill: string;
     };
   };
+
   const shortTiming = {
     duration: 250,
     iterations: 1,
@@ -68,22 +69,27 @@ const d =
       this._animationTargetClasses = null;
     }
 
-    setupEventListeners() {
+    connectedCallback() {
       this._svg.addEventListener("mouseover", this.onMouseEnter.bind(this));
       this._svg.addEventListener("mouseleave", this.onMouseLeave.bind(this));
       this._svg.addEventListener("click", this.onMouseEnter.bind(this));
       document.addEventListener("touchstart", (event) => {
-        const isClickInside = this._svg.contains(event.target);
+        // NOTE:
+        // The event target is of type EventTarget which may not be of type Node,
+        // so an check is needed for typesaftey
+        if (event.target instanceof Node) {
+          const isClickInside = this._svg.contains(event.target as Node);
 
-        if (!isClickInside && this._hovered) {
-          this.onMouseLeave();
+          if (!isClickInside && this._hovered) {
+            this.onMouseLeave();
+          }
         }
       });
     }
 
-    connectedCallback() {
-      this.setupEventListeners();
-    }
+    // TODO:
+    // Remove event listeners
+    disconnectedCallback() {}
 
     set animationTargetClasses(value) {
       this._animationTargetClasses = value;
@@ -104,9 +110,7 @@ const d =
               fill: this._fill,
             },
           ],
-          {
-            ...shortTiming,
-          },
+          shortTiming,
         );
 
         this._splat.animate(
@@ -133,7 +137,6 @@ const d =
               fill: this._fill,
             },
           ],
-
           shortTiming,
         );
 
