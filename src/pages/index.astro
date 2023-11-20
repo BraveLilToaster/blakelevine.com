@@ -4,7 +4,6 @@ import Background from "../components/Background.tsx";
 import JobHistorySection from "../components/JobHistorySection.astro";
 import HeroBlob from "../components/HeroBlob.tsx";
 import SkillIcon from "../components/SkillIcon.astro";
-import SkillsSection from "../components/SkillsSection";
 import { Icon } from "astro-icon";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
@@ -255,7 +254,6 @@ const skills = [
       </div>
     </div>
   </div>
-  <SkillsSection client:load />
 </BaseLayout>
 
 <script define:vars={{ skills }}>
