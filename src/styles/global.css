@@ -20,6 +20,7 @@
     format("truetype-variations");
   font-weight: 1 999;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "JetBrains Mono";
@@ -27,6 +28,7 @@
     format("truetype-variations");
   font-weight: 1 999;
   font-style: italic;
+  font-display: swap;
 }
 body {
   font-family: var(--font-primary);
