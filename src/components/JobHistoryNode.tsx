@@ -3,7 +3,11 @@ import { useEffect } from "react";
 
 type NodeProps = {
   id: string;
-  logo: string;
+  logo: {
+    fallback: string;
+    webp?: string;
+    avif?: string;
+  };
   isActive: boolean;
   size: number;
   cx: number;
@@ -49,15 +53,16 @@ export default function JobHistoryNode({
           </clipPath>
         </defs>
         <foreignObject
-          x={cx - (size * 1.25) / 2}
-          y={cy - (size * 1.25) / 2}
+          x={(cx - size * 1.2) / 2}
+          y={(cy - size * 1.25) / 2}
           height={size * 1.25}
           width={size * 1.25}
           clipPath={`url(#clip-logo-${id})`}
         >
           <picture>
-            <source srcSet={logo} type="image/webp" />
-            <img src="/job_history_logos/bash_gg/bash_gg.opt.png" alt="logo" />
+            {logo.avif ? <source srcSet={logo.avif} type="image/avif" /> : null}
+            {logo.webp ? <source srcSet={logo.webp} type="image/webp" /> : null}
+            <img src={logo.fallback} />
           </picture>
         </foreignObject>
       </motion.g>

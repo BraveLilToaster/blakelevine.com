@@ -24,6 +24,7 @@ const jobHistory = defineCollection({
     endDate: z.coerce.date(),
     bulletPoints: z.string().array(),
     logo: z.object({
+      avif: z.string().optional(),
       fallback: z.string(),
       webp: z.string().optional(),
     }),

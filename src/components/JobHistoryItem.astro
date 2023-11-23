@@ -1,8 +1,13 @@
 ---
 import JobHistoryNodeMobile from "./JobHistoryNodeMobile.tsx";
+import { inView, animate, stagger } from "framer-motion/dom";
 
 interface Props {
-  logo: string;
+  logo: {
+    fallback: string;
+    webp?: string;
+    avif?: string;
+  };
   id: string;
   companyName: string;
   title: string;

@@ -5,7 +5,11 @@ import { cn } from "../utils/cn";
 
 export type JobHistoryNodeMobileProps = {
   id: string;
-  logo: string;
+  logo: {
+    fallback: string;
+    webp?: string;
+    avif?: string;
+  };
   className: string;
 };
 
