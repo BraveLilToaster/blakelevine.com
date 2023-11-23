@@ -24,11 +24,13 @@ export default function JobHistoryNode({
 }: NodeProps) {
   const [scope, animate] = useAnimate();
 
+  console.log(id, cx, size, size * 1.25);
+
   useEffect(() => {
     if (isActive) {
       animate(scope.current, { scale: 1.25 }, { type: "spring" });
       animate(".node", { fill: "white" }), { type: "spring" };
-      animate(".logo", { opacity: 1, scale: 1 });
+      animate(".logo", { opacity: 1, scale: 1.25 });
     } else {
       animate(scope.current, { scale: 1 });
       animate(".node", { fill: "grey" }, { type: "spring" });
@@ -49,14 +51,14 @@ export default function JobHistoryNode({
       <motion.g className="logo" opacity={0} scale={0}>
         <defs>
           <clipPath id={`clip-logo-${id}`}>
-            <motion.circle cx={cx} cy={cy} r={size / 1.7} />
+            <motion.circle cx={cx} cy={cy} r={size / 2} />
           </clipPath>
         </defs>
         <foreignObject
-          x={(cx - size * 1.2) / 2}
-          y={(cy - size * 1.25) / 2}
-          height={size * 1.25}
-          width={size * 1.25}
+          x={cx - size / 2}
+          y={cy - size / 2}
+          height={size}
+          width={size}
           clipPath={`url(#clip-logo-${id})`}
         >
           <picture>
