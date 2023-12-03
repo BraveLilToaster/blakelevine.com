@@ -64,9 +64,19 @@ export default function HeroBlob() {
           filter="url(#offset)"
         >
           <picture>
-            <source srcSet={"/me/me.avif"} type="image/avif" />
-            <source srcSet={"/me/me.webp"} type="image/webp" />
-            <img src="/me/me.opt.png" alt="logo" />
+            <source
+              srcSet={"/me/me.avif"}
+              type="image/avif"
+              height={300}
+              width={300}
+            />
+            <source
+              srcSet={"/me/me.webp"}
+              type="image/webp"
+              height={300}
+              width={300}
+            />
+            <img src="/me/me.opt.png" alt="logo" height={300} width={300} />
           </picture>
         </foreignObject>
       </g>
