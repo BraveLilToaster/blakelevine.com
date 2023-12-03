@@ -1,14 +1,10 @@
 ---
-import JobHistoryNodeMobile from "./JobHistoryNodeMobile.tsx";
-import { inView, animate, stagger } from "framer-motion/dom";
+import JobHistoryNode from "./JobHistoryNode.astro";
 
 interface Props {
-  logo: {
-    fallback: string;
-    webp?: string;
-    avif?: string;
-  };
   id: string;
+  icon: string;
+  backgroundFill?: string;
   companyName: string;
   title: string;
   startDate: Date;
@@ -16,41 +12,74 @@ interface Props {
   bulletPoints: string[];
 }
 
-const { id, logo, companyName, title, startDate, endDate, bulletPoints } =
-  Astro.props;
+const {
+  id,
+  icon,
+  companyName,
+  title,
+  startDate,
+  endDate,
+  bulletPoints,
+  backgroundFill,
+} = Astro.props;
 ---
 
-<div class="flex flex-col md:flex-row lg:flex-col">
-  <JobHistoryNodeMobile
-    id={id}
-    logo={logo}
-    className="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:shrink"
-    client:load
-  />
-  <div>
-    <h3 class="text-3xl md:text-4xl">{companyName}</h3>
-    <p class="text-lg mb-0 font-medium">{title}</p>
-    <span class="font-extralight">
-      <time datetime={startDate.toISOString()}>
-        {
-          startDate.toLocaleDateString("en-us", {
-            year: "numeric",
-            month: "short",
-          })
-        }
-      </time>
-       -
-      <time datetime={endDate.toISOString()}>
-        {
-          endDate.toLocaleDateString("en-us", {
-            year: "numeric",
-            month: "short",
-          })
-        }
-      </time>
-    </span>
+<job-history-item>
+  <div class="flex
+  flex-col
+  md:flex-row
+  lg:flex-col">
+    <JobHistoryNode
+      id={id}
+      icon={icon}
+      size={80}
+      backgroundFill={backgroundFill}
+      class="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:shrink lg:absolute lg:group-even:right-0 lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
+    />
+    <div>
+      <h3 class="text-3xl md:text-4xl">{companyName}</h3>
+      <p class="text-lg mb-0 font-medium">{title}</p>
+      <span class="font-extralight">
+        <time datetime={startDate.toISOString()}>
+          {
+            startDate.toLocaleDateString("en-us", {
+              year: "numeric",
+              month: "short",
+            })
+          }
+        </time>
+         -
+        <time datetime={endDate.toISOString()}>
+          {
+            endDate.toLocaleDateString("en-us", {
+              year: "numeric",
+              month: "short",
+            })
+          }
+        </time>
+      </span>
+    </div>
   </div>
-</div>
-<ul class="flex flex-col list-square pt-6 gap-3">
-  {bulletPoints.map((point) => <li>{point}</li>)}
-</ul>
+  <ul class="flex flex-col list-square pt-6 gap-3">
+    {bulletPoints.map((point) => <li>{point}</li>)}
+  </ul>
+
+  <script>
+    import { inView } from "motion";
+
+    class JobHistoryItem extends HTMLElement {
+      constructor() {
+        super();
+
+        const node = this.querySelector("job-history-node")!;
+
+        inView(node, () => {
+          node.setAttribute("data-active", "true");
+          return () => node.setAttribute("data-active", "false");
+        });
+      }
+    }
+
+    customElements.define("job-history-item", JobHistoryItem);
+  </script>
+</job-history-item>

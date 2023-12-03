@@ -1,0 +1,127 @@
+---
+import { Icon } from "astro-icon";
+import { type HTMLAttributes } from "astro/types";
+
+type Props = HTMLAttributes<"svg"> & {
+  id: string;
+  class?: string;
+  backgroundFill?: string;
+  icon: string;
+  size: number;
+  cx?: number;
+  cy?: number;
+};
+
+const { id, icon, size, class: className, backgroundFill } = Astro.props;
+---
+
+<job-history-node id={id} class={className} data-active="false">
+  <svg
+    fill="none"
+    preserveAspectRatio="xMinYMin meet"
+    width={size}
+    height={size}
+    viewBox={`0 0 ${size} ${size}`}
+  >
+    <g class="node-group origin-center">
+      <circle class="node" cx={size / 2} cy={size / 2} r={size / 2} scale={1}
+      ></circle>
+      <g class="logo origin-center">
+        <circle cx={size / 2} cy={size / 2} r={size / 1.9} fill={backgroundFill}
+        ></circle>
+        <Icon height={size} width={size} name={icon} />
+      </g>
+    </g>
+  </svg>
+</job-history-node>
+
+<style>
+  .node-group {
+    scale: 1;
+  }
+  .logo {
+    scale: 1;
+    opacity: 1;
+  }
+  .node {
+    fill: #fff;
+  }
+  :global(.js) {
+    .node-group {
+      scale: 0.7;
+    }
+    .logo {
+      scale: 0;
+      opacity: 0;
+    }
+    .node {
+      fill: #333;
+    }
+  }
+</style>
+
+<script>
+  class JobHistoryNode extends HTMLElement {
+    groupInViewAnimation: Animation;
+    nodeInViewAnimation: Animation;
+    logoInViewAnimation: Animation;
+
+    constructor() {
+      super();
+
+      const group = this.querySelector("g.node-group")!;
+      const node = this.querySelector("circle.node")!;
+      const logo = this.querySelector("g.logo");
+
+      const keyframeInOptions = {
+        duration: 400,
+        fill: "forwards",
+        easing: "ease-out",
+      } satisfies KeyframeEffectOptions;
+
+      this.groupInViewAnimation = new Animation(
+        new KeyframeEffect(group, [{ scale: 1 }], keyframeInOptions),
+      );
+      this.nodeInViewAnimation = new Animation(
+        new KeyframeEffect(node, [{ fill: "#FFF" }], keyframeInOptions),
+      );
+
+      this.logoInViewAnimation = new Animation(
+        new KeyframeEffect(
+          logo,
+          [
+            {
+              opacity: 1,
+              scale: 0.8,
+            },
+          ],
+          keyframeInOptions,
+        ),
+      );
+    }
+
+    static get observedAttributes() {
+      return ["data-active"];
+    }
+
+    attributeChangedCallback(
+      name: string,
+      _oldValue: string,
+      newValue: string,
+    ) {
+      if (name === "data-active") {
+        if (newValue === "true") {
+          this.groupInViewAnimation.play();
+          this.nodeInViewAnimation.play();
+          this.logoInViewAnimation.play();
+        } else if (newValue === "false") {
+          this.groupInViewAnimation.cancel();
+          this.nodeInViewAnimation.cancel();
+          this.logoInViewAnimation.cancel();
+        }
+      }
+    }
+  }
+
+  customElements.define("job-history-node", JobHistoryNode);
+</script>

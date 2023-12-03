@@ -1,9 +1,7 @@
 id: midtown-fashion
 companyName: Midtown Fashion
-logo:
-  fallback: "/job_history_logos/midtown_fashion/midtown_fashion.opt.png"
-  webp: "/job_history_logos/midtown_fashion/midtown_fashion.webp"
-  avif: "/job_history_logos/midtown_fashion/midtown_fashion.avif"
+backgroundFill: "#DC2832"
+icon: midtown_fashion
 title: Software Engineer
 startDate: January 2020
 endDate: September 2020

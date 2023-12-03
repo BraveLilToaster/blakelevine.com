@@ -18,16 +18,13 @@ const jobHistory = defineCollection({
   type: "data",
   schema: z.object({
     id: z.string(),
+    backgroundFill: z.string().optional(),
     companyName: z.string(),
     title: z.string(),
     startDate: z.coerce.date(),
     endDate: z.coerce.date(),
     bulletPoints: z.string().array(),
-    logo: z.object({
-      avif: z.string().optional(),
-      fallback: z.string(),
-      webp: z.string().optional(),
-    }),
+    icon: z.string(),
   }),
 });
 

@@ -1,9 +1,6 @@
 id: detroit-labs
 companyName: Detroit Labs
-logo:
-  fallback: "/job_history_logos/detroit_labs/detroit_labs.opt.png"
-  webp: "/job_history_logos/detroit_labs/detroit_labs.webp"
-  avif: "/job_history_logos/detroit_labs/detroit_labs.avif"
+icon: detroit_labs
 title: Software Engineer
 startDate: July 2019
 endDate: December 2020

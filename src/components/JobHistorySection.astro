@@ -1,7 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import JobHistoryItem from "./JobHistoryItem.astro";
-import JobHistoryBackground from "./JobHistoryBackground.tsx";
+import JobHistoryBackground from "./JobHistoryBackground.astro";
 
 const jobs = (await getCollection("jobHistory"))
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
@@ -11,32 +11,45 @@ const jobs = (await getCollection("jobHistory"))
 <div class="m-auto max-w-[912px]">
   <h2 class="text-4xl mb-8 md:text-center">Professional History</h2>
   <p class="text-lg/relaxed">
-    I have a decade of experience in early stage startups including product
-    launches, refactors and designing early stage prototypes. My skills in user
-    interface design lead to pixel perfect & responsive layouts.
+    <p class="text-lg/relaxed">
+      I am Blake, a seasoned full-stack engineer with a primary focus on Web
+      Development. I utilize my bacground in design create pixel perfect user
+      interfaces and complex layouts.
+    </p>
+    <p class="text-lg/relaxed">
+      My expertise in utilizing technologies such as React, React Native,
+      TypeScript, NextJS, and Node to develop impactful real-world products. As
+      a lead contributor, I have played a pivotal role in the entire product
+      lifecycle, demonstrating strong decision-making skills and contributing to
+      ideation, prototyping, and successful product launches. My leadership
+      capabilities shine through in my track record of guiding teams to success,
+      characterized by effective communication, meticulous planning, and a keen
+      understanding of business needs.
+    </p>
+    <div class="relative lg:pt-[150px] lg:pb-[190px]">
+      <JobHistoryBackground class="max-lg:w-0" />
+      <ul class="z-10 relative">
+        {
+          jobs.map((job, idx) => (
+            <li
+              class={`group py-6 md:py-12 lg:pt-[8rem] lg:pb-[4rem] ${
+                idx % 2 ? `lg:pl-12 lg:pr-48` : `lg:pl-48 lg:pr-12`
+              }`}
+            >
+              <JobHistoryItem
+                id={job.id}
+                icon={job.icon}
+                backgroundFill={job.backgroundFill}
+                companyName={job.companyName}
+                title={job.title}
+                startDate={job.startDate}
+                endDate={job.endDate}
+                bulletPoints={job.bulletPoints}
+              />
+            </li>
+          ))
+        }
+      </ul>
+    </div>
   </p>
-  <div class="relative lg:pt-[150px] lg:pb-[190px]">
-    <JobHistoryBackground className="max-lg:w-0" client:load />
-    <ul class="z-10 relative">
-      {
-        jobs.map((job, idx) => (
-          <li
-            class={`py-6 md:py-12 lg:pt-[8rem] lg:pb-[4rem] ${
-              idx % 2 ? `lg:pl-12 lg:pr-48` : `lg:pl-48 lg:pr-12`
-            }`}
-          >
-            <JobHistoryItem
-              id={job.id}
-              logo={job.logo}
-              companyName={job.companyName}
-              title={job.title}
-              startDate={job.startDate}
-              endDate={job.endDate}
-              bulletPoints={job.bulletPoints}
-            />
-          </li>
-        ))
-      }
-    </ul>
-  </div>
 </div>

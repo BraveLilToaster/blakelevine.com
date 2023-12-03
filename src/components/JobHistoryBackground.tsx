@@ -1,7 +1,6 @@
 import { motion, useScroll, useMotionValueEvent } from "framer-motion";
 import { useRef, useState } from "react";
 import { cn } from "../utils/cn";
-import JobHistoryNode from "./JobHistoryNode";
 
 export type JobHistoryBackgroundProps = {
   className?: string;
@@ -66,11 +65,7 @@ export default function JobHistoryBackground({
       id: "bash_gg",
       cx: 66,
       cy: 330,
-      logo: {
-        fallback: "/job_history_logos/bash_gg/bash_gg.opt.png",
-        webp: "/job_history_logos/bash_gg/bash_gg.webp",
-        avif: "/job_history_logos/bash_gg/bash_gg.avif",
-      },
+      logo: "bash_gg",
       acivateAt: 0.08,
     },
     {

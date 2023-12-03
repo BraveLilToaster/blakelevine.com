@@ -1,9 +1,6 @@
 id: bash-gg
 companyName: bash.gg
-logo:
-  fallback: "/job_history_logos/bash_gg/bash_gg.opt.png"
-  webp: "/job_history_logos/bash_gg/bash_gg.webp"
-  avif: "/job_history_logos/bash_gg/bash_gg.avif"
+icon: bash_gg
 title: Chief Technology Officer
 startDate: April 2022
 endDate: December 2022
