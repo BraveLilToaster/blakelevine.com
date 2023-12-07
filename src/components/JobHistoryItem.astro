@@ -38,7 +38,7 @@ const {
       backgroundFill={backgroundFill}
       class="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:mr-0 lg:shrink lg:absolute lg:group-even:right-[16px] lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
     />
-    <div>
+    <div class="company-info">
       <h3 class="text-3xl md:text-4xl">{companyName}</h3>
       <p class="text-lg mb-0 font-medium">{title}</p>
       <span class="font-extralight">
@@ -62,35 +62,101 @@ const {
       </span>
     </div>
   </div>
-  <ul class="flex flex-col list-square pt-6 gap-3">
+  <ul class="flex flex-col list-square pt-6 gap-3 bullets">
     {bulletPoints.map((point) => <li>{point}</li>)}
   </ul>
 </job-history-item>
+
+<style>
+  @media (min-width: 996px) {
+    :global(.js) {
+      .company-info,
+      .bullets > li {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+    }
+  }
+</style>
 
 <script>
   class JobHistoryItem extends HTMLElement {
     private hasActivated: boolean;
     node: HTMLElement | null;
+    companyInfoElement: HTMLElement | null;
+    companyBulletsElement: HTMLElement | null;
 
     constructor() {
       super();
       this.hasActivated = false;
       this.node = null;
+      this.companyInfoElement = null;
+      this.companyBulletsElement = null;
     }
 
     connectedCallback() {
       this.node = this.querySelector("job-history-node")!;
+      this.companyInfoElement = this.querySelector(".company-info");
+      this.companyBulletsElement = this.querySelector(".bullets");
     }
 
     static get observedAttributes() {
       return ["data-active"];
     }
 
-    /*
-    attributeChangedCallback(name, old, new) {
-      console.log(name)
+    attributeChangedCallback(name: string, old: string, value: string) {
+      if ((name = "data-active")) {
+        if (old !== value) {
+          console.log(name);
+          this.handleActivateAnimation();
+        }
+      }
     }
-    */
+
+    handleActivateAnimation() {
+      const activateInfoAnimation = new Animation(
+        new KeyframeEffect(
+          this.companyInfoElement,
+          [
+            {
+              opacity: 1,
+              transform: "translateY(0px)",
+            },
+          ],
+          {
+            easing: "ease-out",
+            duration: 500,
+            fill: "forwards",
+          },
+        ),
+      );
+      activateInfoAnimation.play();
+
+      if (this.companyBulletsElement?.hasChildNodes) {
+        let stagger = 1;
+        for (const bullet of this.companyBulletsElement?.children) {
+          const activateBulletAnimation = new Animation(
+            new KeyframeEffect(
+              bullet,
+              [
+                {
+                  opacity: 1,
+                  transform: "translateY(0px)",
+                },
+              ],
+              {
+                easing: "ease-out",
+                duration: 400,
+                fill: "forwards",
+                delay: 100 * stagger,
+              },
+            ),
+          );
+          activateBulletAnimation.play();
+          stagger = stagger + 2;
+        }
+      }
+    }
   }
 
   customElements.define("job-history-item", JobHistoryItem);
