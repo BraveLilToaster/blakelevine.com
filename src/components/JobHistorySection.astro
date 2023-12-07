@@ -3,9 +3,40 @@ import { getCollection } from "astro:content";
 import JobHistoryItem from "./JobHistoryItem.astro";
 import JobHistoryBackground from "./JobHistoryBackground.astro";
 
+const nodeData = [
+  {
+    id: "bash-gg",
+    acivateAt: 0.08,
+  },
+  {
+    id: "neon-marketplace",
+    acivateAt: 0.2478,
+  },
+  {
+    id: "midtown-fashion",
+    acivateAt: 0.41,
+  },
+  {
+    id: "detroit-labs",
+    acivateAt: 0.562,
+  },
+  {
+    id: "pawnguru",
+    acivateAt: 0.72,
+  },
+  {
+    id: "service-com",
+    acivateAt: 0.8826,
+  },
+];
+
 const jobs = (await getCollection("jobHistory"))
   .sort((a, b) => b.data.startDate.valueOf() - a.data.startDate.valueOf())
-  .map((job) => job.data);
+  .map((job) => ({
+    ...job.data,
+    activateAtDesktop: nodeData.find((val) => val.id === job.data.id)
+      ?.acivateAt!,
+  }));
 ---
 
 <div class="m-auto max-w-[912px]">
@@ -45,6 +76,7 @@ const jobs = (await getCollection("jobHistory"))
                 startDate={job.startDate}
                 endDate={job.endDate}
                 bulletPoints={job.bulletPoints}
+                activateAtDesktop={job.activateAtDesktop}
               />
             </li>
           ))
@@ -53,3 +85,75 @@ const jobs = (await getCollection("jobHistory"))
     </div>
   </p>
 </div>
+
+<script>
+  import { inView } from "motion";
+
+  let scrollProgress = 0;
+  const desktopMedia = window.matchMedia("(min-width: 976px)");
+  const jobHistoryItems = document.querySelectorAll("job-history-item");
+
+  desktopMedia.addEventListener("change", handleResize);
+
+  handleResize();
+
+  function handleResize() {
+    if (desktopMedia.matches) {
+      // TODO:
+      // Add map of custom events
+      // e.g.
+      /*
+        declare global {
+          type CustomEventMap = {
+            "job-history-background-scroll": JobHistoryBackgroundScroll;
+          };
+        }
+      */
+
+      // @ts-ignore
+      document.addEventListener(
+        "job-history-background-scroll",
+        handlDesktopActivation,
+      );
+    } else {
+      handleMobileActivation();
+    }
+  }
+
+  function handleMobileActivation() {
+    jobHistoryItems.forEach((item) => {
+      const node = item.querySelector("job-history-node")!;
+
+      inView(node, () => {
+        node.setAttribute("data-active", "true");
+        return () => node.setAttribute("data-active", "false");
+      });
+    });
+  }
+
+  type JobHistoryBackgroundScroll = {
+    payload: {
+      progress: number;
+    };
+  };
+
+  function handlDesktopActivation(
+    event: CustomEvent<JobHistoryBackgroundScroll>,
+  ) {
+    if (desktopMedia.matches) {
+      scrollProgress = event.detail.payload.progress;
+      jobHistoryItems.forEach((item) => {
+        const node = item.querySelector("job-history-node")!;
+        if (node instanceof HTMLElement && item instanceof HTMLElement) {
+          if (scrollProgress >= Number(item.dataset.activateAtDesktop)) {
+            item.dataset.active = "true";
+            node.dataset.active = "true";
+          } else {
+            item.dataset.active = "false";
+            node.dataset.active = "false";
+          }
+        }
+      });
+    }
+  }
+</script>

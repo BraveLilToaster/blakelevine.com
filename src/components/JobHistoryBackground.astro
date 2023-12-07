@@ -66,6 +66,7 @@ const d = `M 456, 10
         stroke-width="12"
         stroke-linecap="round"
         pathLength="1"
+        stroke-dasharray="0"
         d={d}></path>
     </svg>
   </div>
@@ -75,24 +76,36 @@ const d = `M 456, 10
   import { scroll } from "motion";
 
   class JobHistoryBackground extends HTMLElement {
-
     constructor() {
       super();
-
-      const target = this.querySelector("div")
-      const path = this.querySelector("path.background-line")
-
-      scroll(
-        ({y}) => {
-          path.style.strokeDasharray =  `${y.progress}, 1`
-        },
-        {
-          target,
-          offset: ["0 50vh", "1 50vh"],
-        }
-      )
     }
 
+    connectedCallback() {
+      const target = this.querySelector("div")!;
+      const path = this.querySelector("path.background-line")!;
+
+      scroll(
+        ({ y }) => {
+          if (path instanceof SVGPathElement) {
+            path.style.strokeDasharray = `${y.progress}, 1`;
+          }
+          this.dispatchEvent(
+            new CustomEvent("job-history-background-scroll", {
+              detail: {
+                payload: {
+                  progress: y.progress,
+                },
+              },
+              bubbles: true,
+            }),
+          );
+        },
+        {
+          target: target,
+          offset: ["0 50vh", "1 50vh"],
+        },
+      );
+    }
   }
 
   customElements.define("job-history-background", JobHistoryBackground);

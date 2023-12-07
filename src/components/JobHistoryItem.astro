@@ -10,6 +10,7 @@ interface Props {
   startDate: Date;
   endDate: Date;
   bulletPoints: string[];
+  activateAtDesktop: number;
 }
 
 const {
@@ -21,20 +22,21 @@ const {
   endDate,
   bulletPoints,
   backgroundFill,
+  activateAtDesktop,
 } = Astro.props;
 ---
 
-<job-history-item>
-  <div class="flex
-  flex-col
-  md:flex-row
-  lg:flex-col">
+<job-history-item
+  data-active="false"
+  data-activate-at-desktop={activateAtDesktop}
+>
+  <div class="flex flex-col md:flex-row lg:flex-col">
     <JobHistoryNode
       id={id}
       icon={icon}
       size={80}
       backgroundFill={backgroundFill}
-      class="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:shrink lg:absolute lg:group-even:right-0 lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
+      class="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:mr-0 lg:shrink lg:absolute lg:group-even:right-[16px] lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
     />
     <div>
       <h3 class="text-3xl md:text-4xl">{companyName}</h3>
@@ -63,23 +65,33 @@ const {
   <ul class="flex flex-col list-square pt-6 gap-3">
     {bulletPoints.map((point) => <li>{point}</li>)}
   </ul>
+</job-history-item>
 
-  <script>
-    import { inView } from "motion";
+<script>
+  class JobHistoryItem extends HTMLElement {
+    private hasActivated: boolean;
+    node: HTMLElement | null;
 
-    class JobHistoryItem extends HTMLElement {
-      constructor() {
-        super();
-
-        const node = this.querySelector("job-history-node")!;
-
-        inView(node, () => {
-          node.setAttribute("data-active", "true");
-          return () => node.setAttribute("data-active", "false");
-        });
-      }
+    constructor() {
+      super();
+      this.hasActivated = false;
+      this.node = null;
     }
 
-    customElements.define("job-history-item", JobHistoryItem);
-  </script>
-</job-history-item>
+    connectedCallback() {
+      this.node = this.querySelector("job-history-node")!;
+    }
+
+    static get observedAttributes() {
+      return ["data-active"];
+    }
+
+    /*
+    attributeChangedCallback(name, old, new) {
+      console.log(name)
+    }
+    */
+  }
+
+  customElements.define("job-history-item", JobHistoryItem);
+</script>
