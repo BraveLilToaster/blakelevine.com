@@ -36,7 +36,7 @@ const {
       icon={icon}
       size={80}
       backgroundFill={backgroundFill}
-      class="mb-2 md:mb-0 md:mr-4 md:shrink-0 lg:mr-0 lg:shrink lg:absolute lg:group-even:right-[16px] lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
+      class="mb-2 md:mb-0 md:mr-8 md:shrink-0 lg:mr-0 lg:shrink lg:absolute lg:group-even:right-[16px] lg:group-odd:left-[16px] lg:[&>svg]:w-[100px] lg:[&>svg]:h-[100px]"
     />
     <div class="company-info">
       <h3 class="text-3xl md:text-4xl">{companyName}</h3>
@@ -68,7 +68,7 @@ const {
 </job-history-item>
 
 <style>
-  @media (min-width: 996px) {
+  @media (min-width: 976px) {
     :global(.js) {
       .company-info,
       .bullets > li {
@@ -105,9 +105,8 @@ const {
     }
 
     attributeChangedCallback(name: string, old: string, value: string) {
-      if ((name = "data-active")) {
-        if (old !== value) {
-          console.log(name);
+      if (name === "data-active") {
+        if (old !== value && !this.hasActivated) {
           this.handleActivateAnimation();
         }
       }
