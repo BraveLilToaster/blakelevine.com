@@ -4,6 +4,8 @@ import JobHistorySection from "../components/JobHistorySection.astro";
 import HeroAnimatedPortaitBorder from "../components/HeroAnimatedPortraitBorder.astro";
 import SkillIcon from "../components/SkillIcon.astro";
 import { Icon } from "astro-icon";
+import { Image } from "astro:assets";
+import localMeImage from "../images/me.png";
 
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 
@@ -218,7 +220,16 @@ const skills = [
           <div
             class="max-md:w-full max-md:max-w-[20rem] md:w-72 lg:w-96 aspect-square"
           >
-            <HeroAnimatedPortaitBorder />
+            <HeroAnimatedPortaitBorder>
+              <Image
+                src={localMeImage}
+                alt="A portrait photo of Blake Levine wearing a blue collared shirt"
+                widths={[350, 500]}
+                sizes={`(max-width: 995px) 350px, 500px`}
+                quality="max"
+                loading="eager"
+              />
+            </HeroAnimatedPortaitBorder>
           </div>
         </div>
       </div>
