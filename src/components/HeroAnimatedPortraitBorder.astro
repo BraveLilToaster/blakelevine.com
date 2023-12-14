@@ -15,21 +15,21 @@ const pathsVariant2 =
         <path
           d={pathsVariant1}
           transform={`translate(25 25) scale(0.75)`}
-          class="pv1"
+          class="pv1-sm"
           fill="none"></path>
       </clipPath>
     </defs>
     <path
       d={pathsVariant1}
       fill="var(--primary)"
-      transform={`scale(0.95)`}
-      class="pv1"></path>
+      transform={`scale(0.95) rotate(180 100 100)`}
+      class="pv1-lg"></path>
     <path d={pathsVariant2} fill="var(--secondary)" class="pv2"></path>
     <path
       d={pathsVariant1}
       fill="var(--background)"
       transform={`translate(20 20) scale(0.8)`}
-      class="pv1"></path>
+      class="pv1-sm"></path>
     <foreignObject
       x="20"
       y="20"
@@ -98,11 +98,14 @@ const pathsVariant2 =
       }
     }
 
-    .pv1 {
-      animation: 8s infinite alternate linear path-varaint-1;
+    .pv1-lg {
+      animation: 7s infinite alternate ease-in-out path-varaint-1;
+    }
+    .pv1-sm {
+      animation: 6s infinite alternate ease-in-out path-varaint-1;
     }
     .pv2 {
-      animation: 8s infinite alternate linear path-varaint-2;
+      animation: 8s infinite alternate ease-in-out path-varaint-2;
     }
   </style>
 </div>
